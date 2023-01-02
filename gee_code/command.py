@@ -1,4 +1,4 @@
-def _format_num(number):
+def format_num(number):
     return f"{number:0.5g}" if not isinstance(number, str) else ""
 
 
@@ -24,8 +24,8 @@ class Command:
             parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in self.parameters.items()]
             gcode += f'{self.command.upper()} {" ".join(parameters_list)} '
 
-        if self.comment is not None:
-            gcode += f'{gcode.ljust(comment_indent)} ; {self.comment}'
+        if self.comment is not None and include_comments:
+            gcode = f'{gcode.ljust(comment_indent)} ; {self.comment}'
 
         return gcode.strip()
 
