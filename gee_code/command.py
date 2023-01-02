@@ -6,7 +6,7 @@ class Command:
     """
     Object for containing a single g-code command
     """
-    def __init__(self, command_code, **parameters):
+    def __init__(self, command_code=None, **parameters):
         self.command = command_code
         self.comment = parameters.pop("comment", None)
         self.parameters = parameters
@@ -20,12 +20,12 @@ class Command:
         """
         gcode = ""
 
-        if self.command != "":
+        if self.command is not None:
             parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in self.parameters.items()]
             gcode += f'{self.command.upper()} {" ".join(parameters_list)} '
 
         if self.comment is not None and include_comments:
-            gcode = f'{gcode.ljust(comment_indent)} ; {self.comment}'
+            gcode = f'{gcode.ljust(comment_indent - 1)} ; {self.comment}'
 
         return gcode.strip()
 
