@@ -46,3 +46,35 @@ class TestSequence(unittest.TestCase):
                           "M205 X10 Y10 Z0.2 E4.5\n" \
                           "M207\n"
         self.assertEqual(expected_output, self.s.generate(include_comments=False))
+
+    def test_sub_sequence(self):
+        """Test addition of a subsequence to a sequence"""
+        main_sequence = Sequence()
+
+        # Creates a subsequence that draws a square on the x,y plane
+        sub_sequence = Sequence()
+        sub_sequence.cmd("G1", x=10, y=0, e=0.2)
+        sub_sequence.cmd("G1", x=10, y=10, e=0.2)
+        sub_sequence.cmd("G1", x=0, y=10, e=0.2)
+        sub_sequence.cmd("G1", x=0, y=0, e=0.2)
+
+        # Adds the subsequence twice moving the z up between moves
+        main_sequence.cmd("G28", comment="Home axes")
+        main_sequence.cmd("G1", z=0.2)
+        main_sequence.sub(sub_sequence)
+        main_sequence.cmd("G1", z=0.4)
+        main_sequence.sub(sub_sequence)
+
+        expected_output = "G28                                ; Home axes\n" \
+                          "G1 Z0.2\n" \
+                          "G1 X10 Y0 E0.2\n" \
+                          "G1 X10 Y10 E0.2\n" \
+                          "G1 X0 Y10 E0.2\n" \
+                          "G1 X0 Y0 E0.2\n" \
+                          "G1 Z0.4\n" \
+                          "G1 X10 Y0 E0.2\n" \
+                          "G1 X10 Y10 E0.2\n" \
+                          "G1 X0 Y10 E0.2\n" \
+                          "G1 X0 Y0 E0.2\n" \
+
+        self.assertEqual(expected_output, main_sequence.generate())
