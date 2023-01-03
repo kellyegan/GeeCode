@@ -12,9 +12,9 @@ class Command:
     """
     Object for containing a single g-code command
     """
-    def __init__(self, command_code=None, **parameters):
+    def __init__(self, command_code=None, comment=None, **parameters):
         self.command = command_code
-        self.comment = parameters.pop("comment", None)
+        self.comment = comment
         self.parameters = parameters
 
     def __eq__(self, other):
