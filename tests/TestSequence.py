@@ -78,3 +78,7 @@ class TestSequence(unittest.TestCase):
                           "G1 X0 Y0 E0.2\n" \
 
         self.assertEqual(expected_output, main_sequence.generate())
+
+    def test_variables(self):
+        """Test adding variables to a sequence"""
+        self.fail()
