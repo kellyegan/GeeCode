@@ -10,5 +10,8 @@ class Sequence:
         self._commands.append(command)
 
     def generate(self, include_comments=True, comment_indent=35):
-        gcode = "\n".join([c.generate(comment_indent=comment_indent, include_comments=include_comments).strip() for c in self._commands])
+        gcode = ""
+        for command in self._commands:
+            if isinstance(command, Command):
+                gcode += command.generate(comment_indent=comment_indent, include_comments=include_comments) + "\n"
         return gcode
