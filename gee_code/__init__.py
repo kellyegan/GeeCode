@@ -1,1 +1,1 @@
-from gee_code.command import Command
+from gee_code.Command import Command
