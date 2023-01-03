@@ -1,5 +1,5 @@
 import unittest
-from gee_code import Command
+from geecode import Command
 
 
 class TestCommand(unittest.TestCase):
