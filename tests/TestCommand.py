@@ -2,7 +2,7 @@ import unittest
 from gee_code import Command
 
 
-class CommandTestCase(unittest.TestCase):
+class TestCommand(unittest.TestCase):
     def test_command_no_params(self):
         """Test a command without parameters"""
         c = Command("G28")
