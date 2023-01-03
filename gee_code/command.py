@@ -1,5 +1,11 @@
 def format_num(number):
-    return f"{number:0.5g}" if not isinstance(number, str) else ""
+    """
+    Formats numbers for parameters with up to 5 decimal places but strips trailing zeros
+    :param number:
+    :return:
+    """
+    number_string = f"{number:0.5f}" if not isinstance(number, str) else ""
+    return number_string.rstrip('0').rstrip('.')
 
 
 class Command:
