@@ -9,6 +9,6 @@ class Sequence:
         command = Command(command_code, **parameters)
         self._commands.append(command)
 
-    def generate(self, comment_indent=35):
-        gcode = "\n".join([c.generate(comment_indent=comment_indent).strip() for c in self._commands])
+    def generate(self, include_comments=True, comment_indent=35):
+        gcode = "\n".join([c.generate(comment_indent=comment_indent, include_comments=include_comments).strip() for c in self._commands])
         return gcode
