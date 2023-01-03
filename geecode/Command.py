@@ -17,6 +17,17 @@ class Command:
         self.comment = parameters.pop("comment", None)
         self.parameters = parameters
 
+    def __eq__(self, other):
+        if not isinstance(other, Command):
+            return False
+        if self.command != other.command:
+            return False
+        if self.comment != other.comment:
+            return False
+        if self.parameters != other.parameters:
+            return False
+        return True
+
     def generate(self, include_comments=True, comment_indent=35):
         """
         Generate a line of g-code from the command object
