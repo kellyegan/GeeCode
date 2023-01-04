@@ -5,14 +5,15 @@ class Sequence:
     def __init__(self):
         self._commands = []
 
-    def cmd(self, command_code, **parameters):
+    def cmd(self, command_code, comment=None, **parameters):
         """
         Add a command to the sequence
         :param command_code: G-code command to execute
+        :param comment: Any comment to add to the command
         :param parameters: key-value parameters representing g-code commands parameters
         :return:
         """
-        command = Command(command_code, **parameters)
+        command = Command(command_code, comment=comment, **parameters)
         self._commands.append(command.generate)
 
     def sub(self, sub_sequence):
