@@ -20,10 +20,10 @@ def template_gcode(code=None, **parameters):
 def create_command(code=None, comment=None, **parameters):
 
     def command(comments=True, indent=35, **variables):
-        gcode = template_gcode(code=code, **parameters)
+        gcode = template_gcode(code=code, **parameters).format(**variables)
 
         if comment is not None and comments:
-            gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {comment.format(**variables)}'
+            gcode = f'{gcode.ljust(indent - 1)} ; {comment.format(**variables)}'
 
         return gcode.strip()
 

@@ -37,7 +37,7 @@ class Sequence:
         """
         self._commands.append(sub_sequence.generate)
 
-    def generate(self, comments=True, indent=35):
+    def generate(self, comments=True, indent=35, **variables):
         """
         Generate gcode for this sequence
         :param comments: Boolean to sets whether comments are included
@@ -45,7 +45,7 @@ class Sequence:
         :param parameters: Any parameters for this command
         :return: gcode string
         """
-        gcode = "\n".join([c(comments=comments, indent=indent) for c in self._commands])
+        gcode = "\n".join([c(comments=comments, indent=indent, **variables) for c in self._commands])
         return gcode
 
 

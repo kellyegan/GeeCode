@@ -53,6 +53,20 @@ class TestSequence(unittest.TestCase):
                           "M207"
         self.assertEqual(expected_output, self.s.generate(comments=False))
 
+    def test_variable(self):
+        """Should use a variable that can be set when the sequence generates"""
+        sequence = Sequence()
+        sequence.cmd("G1", x="{size}", y=0, e=0.2)
+        sequence.cmd("G1", x="{size}", y="{size}", e=0.2)
+        sequence.cmd("G1", x=0, y="{size}", e=0.2)
+        sequence.cmd("G1", x=0, y=0, e=0.2)
+
+        expected_output = 'G1 X20 Y0 E0.2\n' \
+                          'G1 X20 Y20 E0.2\n' \
+                          'G1 X0 Y20 E0.2\n' \
+                          'G1 X0 Y0 E0.2'
+        self.assertEqual(expected_output, sequence.generate(size=20))
+
     def test_sub_sequence(self):
         """Test addition of a subsequence to a sequence"""
         main_sequence = Sequence()
