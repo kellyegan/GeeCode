@@ -51,6 +51,6 @@ class TestCommand(unittest.TestCase):
 
     def test_variable(self):
         """Should print command with a variable that is assignable at time of generation"""
-        c = create_command("G1", x=40, y=50.5, z=0.5, e="{e_value}", comment="sets max accelerations")
+        c = create_command("G1", x=40, y=50.5, z=0.5, e="$e_value", comment="sets max accelerations")
         generated_gcode = c(e_value=0.1)
         self.assertEqual("G1 X40 Y50.5 Z0.5 E0.1             ; sets max accelerations", generated_gcode)
