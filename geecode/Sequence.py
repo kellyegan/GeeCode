@@ -16,6 +16,19 @@ class Sequence:
         command = create_command(command_code, comment=comment, **parameters)
         self._commands.append(command)
 
+    def move(self, comment=None, x=None, y=None, z=None, e=None, f=None):
+        """
+        Use G1 command to move along one or more axes.
+        :param comment:
+        :param x:
+        :param y:
+        :param z:
+        :param e:
+        :param f:
+        :return:
+        """
+        self.cmd("G1", comment=comment, x=x, y=y, z=z, e=e, f=f)
+
     def sub(self, sub_sequence):
         """
         Add a sub-sequence to this sequence

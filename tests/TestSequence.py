@@ -28,14 +28,16 @@ class TestSequence(unittest.TestCase):
                           "M207                               ; Fans off"
         self.assertEqual(expected_output, self.s.generate())
 
-    # def test_move_command(self):
-    #     """Should generate a G1 command using move() method"""
-    #     s = Sequence()
-    #     s.move(x=20, y =25, e=0.02)
-    #     expected_output = "G1 F900\n" \
-    #                       "G1 Z0.2 E0.02\n" \
-    #                       "G1 X20 Y25 E0.02"
-    #     self.assertEqual(expected_output, s.generate())
+    def test_move_command(self):
+        """Should generate a G1 command using move() method"""
+        s = Sequence()
+        s.move(f=900, comment="Set acceleration")
+        s.move(z=0.2, e=0.02)
+        s.move(x=20, y=25, e=0.1)
+        expected_output = "G1 F900                            ; Set acceleration\n" \
+                          "G1 Z0.2 E0.02\n" \
+                          "G1 X20 Y25 E0.1"
+        self.assertEqual(expected_output, s.generate())
 
     def test_custom_indent(self):
         """Test if sequence applies a custom comment indentation"""
