@@ -34,7 +34,7 @@ class TestSequence(unittest.TestCase):
         expected_output = "M73 P0 R0                ; set print progress\n" \
                           "M205 X10 Y10 Z0.2 E4.5   ; sets the jerk limits, mm/sec\n" \
                           "M207                     ; Fans off"
-        self.assertEqual(expected_output, self.s.generate(comment_indent=25))
+        self.assertEqual(expected_output, self.s.generate(indent=25))
 
     def test_no_comment(self):
         """Test if sequence applies a custom comment indentation"""

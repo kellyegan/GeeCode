@@ -23,13 +23,13 @@ class Sequence:
         """
         self._commands.append(sub_sequence.generate)
 
-    def generate(self, comments=True, comment_indent=35, **parameters):
+    def generate(self, comments=True, indent=35):
         """
         Generate gcode for this sequence
         :param comments: Boolean to sets whether comments are included
-        :param comment_indent: Number of spaces the comment is justified from command.
+        :param indent: Number of spaces the comment is justified from command.
         :param parameters: Any parameters for this command
         :return: gcode string
         """
-        gcode = "\n".join([c(comment_indent=comment_indent, comments=comments) for c in self._commands])
+        gcode = "\n".join([c(comments=comments, indent=indent) for c in self._commands])
         return gcode
