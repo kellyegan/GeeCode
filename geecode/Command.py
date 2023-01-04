@@ -1,14 +1,22 @@
 import types
 
 
-def format_num(number):
-    """
-    Formats numbers for parameters with up to 5 decimal places but strips trailing zeros
-    :param number:
-    :return:
-    """
-    number_string = f"{number:0.5f}" if not isinstance(number, str) else ""
+def format_value(value):
+    number_string = f"{value:0.5f}" if not isinstance(value, str) else value
     return number_string.rstrip('0').rstrip('.')
+
+
+def template_gcode(code=None, **parameters):
+    if code is None:
+        return ""
+
+    template = code.upper()
+    parameters_list = [k.upper() + format_value(v) for k, v in parameters.items()]
+
+    if len(parameters_list) > 0:
+        template += " " + " ".join(parameters_list)
+
+    return template
 
 
 class Command:
@@ -16,53 +24,21 @@ class Command:
     Object for containing a single g-code command
     """
 
-    @classmethod
-    def create_command(cls, command_code=None, comment=None, **parameters):
-
-        def command_generator(comments=True, indent=35, **gen_parameters):
-            gcode = ""
-            if command_code is not None:
-                gcode += command_code.upper()
-                parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in (parameters | gen_parameters).items()]
-                gcode += " " + " ".join(parameters_list)
-
-            if comment is not None and comments:
-                gcode = f'{gcode.ljust(indent - 1)} ; {comment}'
-            return gcode
-
-        return command_generator
-
     def __init__(self, command_code=None, comment=None, **parameters):
-        self.command = command_code
+        self.template = template_gcode(code=command_code, **parameters)
         self.comment = comment
-        self.parameters = parameters
 
-    def __eq__(self, other):
-        if not isinstance(other, Command):
-            return False
-        if self.command != other.command:
-            return False
-        if self.comment != other.comment:
-            return False
-        if self.parameters != other.parameters:
-            return False
-        return True
-
-    def generate(self, comments=True, indent=35):
+    def generate(self, comments=True, indent=35, **variables):
         """
         Generate a line of g-code from the command object
         :param comments: Include comments in output
         :param indent: Number of spaces to indent the comment
         :return: string representing code command
         """
-        gcode = ""
-
-        if self.command is not None:
-            parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in self.parameters.items()]
-            gcode += f'{self.command.upper()} {" ".join(parameters_list)} '
+        gcode = self.template
 
         if self.comment is not None and comments:
-            gcode = f'{gcode.ljust(indent - 1)} ; {self.comment}'
+            gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {self.comment.format(**variables)}'
 
         return gcode.strip()
 
