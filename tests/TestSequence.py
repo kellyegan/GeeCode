@@ -1,5 +1,4 @@
 import unittest
-from geecode import Command
 from geecode import Sequence
 
 
