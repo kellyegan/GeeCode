@@ -17,19 +17,6 @@ def template_gcode(code=None, **parameters):
     return template
 
 
-def create_command(code=None, comment=None, **parameters):
-
-    def command(comments=True, indent=35, **variables):
-        gcode = template_gcode(code=code, **parameters)
-
-        if comment is not None and comments:
-            gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {comment.format(**variables)}'
-
-        return gcode.strip()
-
-    return command
-
-
 class Command:
     """
     Object for containing a single g-code command

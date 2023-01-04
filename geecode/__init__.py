@@ -1,2 +1,2 @@
-from geecode.Command import Command, create_command
+from geecode.Command import Command
 from geecode.Sequence import Sequence
