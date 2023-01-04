@@ -17,31 +17,16 @@ def template_gcode(code=None, **parameters):
     return template
 
 
-class Command:
-    """
-    Object for containing a single g-code command
-    """
+def create_command(code=None, comment=None, **parameters):
 
-    def __init__(self, code=None, comment=None, **parameters):
-        self.code = code
-        self.parameters = parameters
-        self.comment = comment
+    def command(comments=True, indent=35, **variables):
+        gcode = template_gcode(code=code, **parameters)
 
-    def generate(self, comments=True, indent=35, **variables):
-        """
-        Generate a line of g-code from the command object
-        :param comments: Include comments in output
-        :param indent: Number of spaces to indent the comment
-        :return: string representing code command
-        """
-
-        template = template_gcode(code=self.code, **self.parameters)
-        gcode = template
-
-        if self.comment is not None and comments:
-            gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {self.comment.format(**variables)}'
+        if comment is not None and comments:
+            gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {comment.format(**variables)}'
 
         return gcode.strip()
 
+    return command
 
 
