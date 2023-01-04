@@ -1,5 +1,3 @@
-import types
-
 
 def format_value(value):
     number_string = f"{value:0.5f}" if not isinstance(value, str) else value
@@ -17,6 +15,19 @@ def template_gcode(code=None, **parameters):
         template += " " + " ".join(parameters_list)
 
     return template
+
+
+def create_command(code=None, comment=None, **parameters):
+
+    def command(comments=True, indent=35, **variables):
+        gcode = template_gcode(code=code, **parameters)
+
+        if comment is not None and comments:
+            gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {comment.format(**variables)}'
+
+        return gcode.strip()
+
+    return command
 
 
 class Command:
