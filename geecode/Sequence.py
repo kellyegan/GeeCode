@@ -16,6 +16,9 @@ class Sequence:
         command = Command(command_code, comment=comment, **parameters)
         self._commands.append(command.generate)
 
+    def move(self, x=None, y=None, z=None, e=None, f=None):
+        pass
+
     def sub(self, sub_sequence):
         """
         Add a sub-sequence to this sequence
@@ -34,3 +37,5 @@ class Sequence:
         """
         gcode = "\n".join([c(comments=comments, indent=indent) for c in self._commands])
         return gcode
+
+
