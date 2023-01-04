@@ -1,5 +1,5 @@
 from geecode import create_command
-
+from string import Template
 
 class Sequence:
     def __init__(self):
@@ -29,22 +29,27 @@ class Sequence:
         """
         self.cmd("G1", comment=comment, x=x, y=y, z=z, e=e, f=f)
 
-    def sub(self, sub_sequence):
+    def sub(self, sub_sequence, **variables):
         """
-        Add a sub-sequence to this sequence
-        :param Sequence sub_sequence:
+        Add a sub-sequence to the current sequence
+        :param sub_sequence:
+        :param variables:
         :return:
         """
-        self._commands.append(sub_sequence.generate)
+        def generate(comments=True, indent=35):
+            return sub_sequence.generate(**variables)
+
+        self._commands.append(generate)
 
     def generate(self, comments=True, indent=35, **variables):
         """
-        Generate gcode for this sequence
-        :param comments: Boolean to sets whether comments are included
-        :param indent: Number of spaces the comment is justified from command.
-        :param parameters: Any parameters for this command
-        :return: gcode string
+        Generate gcode for sequence
+        :param comments:
+        :param indent:
+        :param variables:
+        :return:
         """
+
         gcode = "\n".join([c(comments=comments, indent=indent, **variables) for c in self._commands])
         return gcode
 
