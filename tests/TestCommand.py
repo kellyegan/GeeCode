@@ -1,3 +1,4 @@
+import types
 import unittest
 from geecode import Command
 
@@ -34,6 +35,14 @@ class TestCommand(unittest.TestCase):
         self.assertEqual("", c.generate())
 
     def test_decimal_params(self):
-        """Test formating of decimal numbers in parameters"""
+        """Test formmating of decimal numbers in parameters"""
         c = Command("G1", x=15.123516156, y=0.456, z=0.387601, e=0.000004932)
         self.assertEqual("G1 X15.12352 Y0.456 Z0.3876 E0", c.generate())
+
+    def test_command_generator(self):
+        """Test generating a command with its own parameters"""
+        g = Command.create_command("G1", x=15, y=10, z="_", comment="This is a test.")
+        self.assertIsInstance(g, types.FunctionType)
+        self.assertEqual("G1 X15 Y10 Z5                      ; This is a test.", g(z=5))
+        self.assertEqual("G1 X5 Y10 Z25                      ; This is a test.", g(x=5, z=25))
+        self.assertEqual("G1 X15 Y10 Z7.125", g(z=7.125, include_comments=False))

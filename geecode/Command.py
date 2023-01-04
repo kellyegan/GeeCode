@@ -1,3 +1,6 @@
+import types
+
+
 def format_num(number):
     """
     Formats numbers for parameters with up to 5 decimal places but strips trailing zeros
@@ -12,6 +15,23 @@ class Command:
     """
     Object for containing a single g-code command
     """
+
+    @classmethod
+    def create_command(cls, command_code=None, comment=None, **parameters):
+
+        def command_generator(include_comments = True, comment_indent = 35, **gen_parameters):
+            gcode = ""
+            if command_code is not None:
+                gcode += command_code.upper()
+                parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in (parameters | gen_parameters).items()]
+                gcode += " " + " ".join(parameters_list)
+
+            if comment is not None and include_comments:
+                gcode = f'{gcode.ljust(comment_indent - 1)} ; {comment}'
+            return gcode
+
+        return command_generator
+
     def __init__(self, command_code=None, comment=None, **parameters):
         self.command = command_code
         self.comment = comment
@@ -45,4 +65,6 @@ class Command:
             gcode = f'{gcode.ljust(comment_indent - 1)} ; {self.comment}'
 
         return gcode.strip()
+
+
 
