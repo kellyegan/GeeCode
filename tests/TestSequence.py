@@ -41,7 +41,7 @@ class TestSequence(unittest.TestCase):
         expected_output = "M73 P0 R0\n" \
                           "M205 X10 Y10 Z0.2 E4.5\n" \
                           "M207"
-        self.assertEqual(expected_output, self.s.generate(include_comments=False))
+        self.assertEqual(expected_output, self.s.generate(comments=False))
 
     def test_sub_sequence(self):
         """Test addition of a subsequence to a sequence"""

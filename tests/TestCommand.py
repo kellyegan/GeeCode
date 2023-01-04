@@ -45,4 +45,4 @@ class TestCommand(unittest.TestCase):
         self.assertIsInstance(g, types.FunctionType)
         self.assertEqual("G1 X15 Y10 Z5                      ; This is a test.", g(z=5))
         self.assertEqual("G1 X5 Y10 Z25                      ; This is a test.", g(x=5, z=25))
-        self.assertEqual("G1 X15 Y10 Z7.125", g(z=7.125, include_comments=False))
+        self.assertEqual("G1 X15 Y10 Z7.125", g(z=7.125, comments=False))

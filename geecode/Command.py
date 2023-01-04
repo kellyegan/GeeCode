@@ -19,14 +19,14 @@ class Command:
     @classmethod
     def create_command(cls, command_code=None, comment=None, **parameters):
 
-        def command_generator(include_comments = True, comment_indent = 35, **gen_parameters):
+        def command_generator(comments=True, comment_indent=35, **gen_parameters):
             gcode = ""
             if command_code is not None:
                 gcode += command_code.upper()
                 parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in (parameters | gen_parameters).items()]
                 gcode += " " + " ".join(parameters_list)
 
-            if comment is not None and include_comments:
+            if comment is not None and comments:
                 gcode = f'{gcode.ljust(comment_indent - 1)} ; {comment}'
             return gcode
 
@@ -48,10 +48,10 @@ class Command:
             return False
         return True
 
-    def generate(self, include_comments=True, comment_indent=35):
+    def generate(self, comments=True, comment_indent=35):
         """
         Generate a line of g-code from the command object
-        :param include_comments: Include comments in output
+        :param comments: Include comments in output
         :param comment_indent: Number of spaces to indent the comment
         :return: string representing code command
         """
@@ -61,7 +61,7 @@ class Command:
             parameters_list = [f"{k.upper().strip()}{format_num(v)}" for k, v in self.parameters.items()]
             gcode += f'{self.command.upper()} {" ".join(parameters_list)} '
 
-        if self.comment is not None and include_comments:
+        if self.comment is not None and comments:
             gcode = f'{gcode.ljust(comment_indent - 1)} ; {self.comment}'
 
         return gcode.strip()
