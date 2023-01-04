@@ -29,6 +29,10 @@ class TestCommand(unittest.TestCase):
         c = Command(comment="sets max accelerations")
         self.assertEqual("; sets max accelerations", c.generate())
 
+    def test_none_value(self):
+        c = Command("G1", x=10, y=20, z=None)
+        self.assertEqual("G1 X10 Y20", c.generate())
+
     def test_blank(self):
         """Test a blank command"""
         c = Command()

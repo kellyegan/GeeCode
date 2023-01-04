@@ -11,7 +11,7 @@ def template_gcode(code=None, **parameters):
         return ""
 
     template = code.upper()
-    parameters_list = [k.upper() + format_value(v) for k, v in parameters.items()]
+    parameters_list = [k.upper() + format_value(v) for k, v in parameters.items() if v is not None]
 
     if len(parameters_list) > 0:
         template += " " + " ".join(parameters_list)
@@ -24,8 +24,9 @@ class Command:
     Object for containing a single g-code command
     """
 
-    def __init__(self, command_code=None, comment=None, **parameters):
-        self.template = template_gcode(code=command_code, **parameters)
+    def __init__(self, code=None, comment=None, **parameters):
+        self.code = code
+        self.parameters = parameters
         self.comment = comment
 
     def generate(self, comments=True, indent=35, **variables):
@@ -35,7 +36,9 @@ class Command:
         :param indent: Number of spaces to indent the comment
         :return: string representing code command
         """
-        gcode = self.template
+
+        template = template_gcode(code=self.code, **self.parameters)
+        gcode = template
 
         if self.comment is not None and comments:
             gcode = f'{gcode.format(**variables).ljust(indent - 1)} ; {self.comment.format(**variables)}'
