@@ -20,10 +20,12 @@ def template_gcode(code=None, **parameters):
 
 
 def create_command(code=None, comment=None, **parameters):
+
     def command(comments=True, indent=35, **variables):
-        t = Template("$a $b $c")
+
+        formatted_variables = {k:format_value(v) for k,v in variables.items()}
         template = Template(template_gcode(code=code, **parameters))
-        gcode = template.safe_substitute(**variables)
+        gcode = template.safe_substitute(**formatted_variables)
 
         if comment is not None and comments:
             gcode = f'{gcode.ljust(indent - 1)} ; {comment.format(**variables)}'
