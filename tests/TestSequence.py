@@ -26,7 +26,8 @@ class TestSequence(unittest.TestCase):
         expected_output = "M73 P0 R0                          ; set print progress\n" \
                           "M205 X10 Y10 Z0.2 E4.5             ; sets the jerk limits, mm/sec\n" \
                           "M207                               ; Fans off"
-        self.assertEqual(expected_output, self.s.generate())
+        actual_output = "\n".join(self.s.generate())
+        self.assertEqual(expected_output, actual_output)
 
     def test_move_command(self):
         """Should generate a G1 command using move() method"""
@@ -37,21 +38,25 @@ class TestSequence(unittest.TestCase):
         expected_output = "G1 F900                            ; Set acceleration\n" \
                           "G1 Z0.2 E0.02\n" \
                           "G1 X20 Y25 E0.1"
-        self.assertEqual(expected_output, s.generate())
+
+        actual_output = "\n".join(s.generate())
+        self.assertEqual(expected_output, actual_output)
 
     def test_custom_indent(self):
         """Test if sequence applies a custom comment indentation"""
         expected_output = "M73 P0 R0                ; set print progress\n" \
                           "M205 X10 Y10 Z0.2 E4.5   ; sets the jerk limits, mm/sec\n" \
                           "M207                     ; Fans off"
-        self.assertEqual(expected_output, self.s.generate(indent=25))
+        actual_output = "\n".join(self.s.generate(indent=25))
+        self.assertEqual(expected_output, actual_output)
 
     def test_no_comment(self):
         """Test if sequence applies a custom comment indentation"""
         expected_output = "M73 P0 R0\n" \
                           "M205 X10 Y10 Z0.2 E4.5\n" \
                           "M207"
-        self.assertEqual(expected_output, self.s.generate(comments=False))
+        actual_output = "\n".join(self.s.generate(comments=False))
+        self.assertEqual(expected_output, actual_output)
 
     def test_variable(self):
         """Should use a variable that can be set when the sequence generates"""
@@ -65,7 +70,8 @@ class TestSequence(unittest.TestCase):
                           'G1 X20 Y20 E0.2\n' \
                           'G1 X0 Y20 E0.2\n' \
                           'G1 X0 Y0 E0.2'
-        self.assertEqual(expected_output, sequence.generate(size=20))
+        actual_output = "\n".join(sequence.generate(size=20))
+        self.assertEqual(expected_output, actual_output)
 
     def test_sub_sequence(self):
         """Test addition of a subsequence to a sequence"""
@@ -96,7 +102,9 @@ class TestSequence(unittest.TestCase):
                           "G1 X10 Y10 E0.2\n" \
                           "G1 X0 Y10 E0.2\n" \
                           "G1 X0 Y0 E0.2"
-        self.assertEqual(expected_output, main_sequence.generate())
+
+        actual_output = "\n".join(main_sequence.generate())
+        self.assertEqual(expected_output, actual_output)
 
     def test_sub_sequence_variable(self):
         """Should allow assignment of variables when a subsequence is generated"""
@@ -127,4 +135,6 @@ class TestSequence(unittest.TestCase):
                           "G1 X30.4 Y30.4 E0.2\n" \
                           "G1 X0 Y30.4 E0.2\n" \
                           "G1 X0 Y0 E0.2"
-        self.assertEqual(expected_output, main_sequence.generate())
+
+        actual_output = "\n".join(main_sequence.generate())
+        self.assertEqual(expected_output, actual_output)

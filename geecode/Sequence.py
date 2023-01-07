@@ -26,5 +26,14 @@ class Sequence:
     def generate(self, comments=True, indent=35, **variables):
         """ Generate gcode for sequence """
 
-        gcode = "\n".join([c(comments=comments, indent=indent, **variables) for c in self._commands])
+        gcode = []
+        for c in self._commands:
+            new_cmd = c(comments=comments, indent=indent, **variables)
+            if type(new_cmd) == list:
+                gcode.extend(new_cmd)
+            else:
+                gcode.append(new_cmd)
+
         return gcode
+
+
