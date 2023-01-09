@@ -112,9 +112,9 @@ class TestSequence(unittest.TestCase):
 
         # Creates a subsequence that draws a square on the x,y plane
         sub_sequence = Sequence()
-        sub_sequence.cmd("G1", x="$size", y=0, e=0.2, comment="Begin square")
+        sub_sequence.cmd("G1", x=0, y="$size", e=0.2, comment="Begin square")
         sub_sequence.cmd("G1", x="$size", y="$size", e=0.2)
-        sub_sequence.cmd("G1", x=0, y="$size", e=0.2)
+        sub_sequence.cmd("G1", x="$size", y=0, e=0.2)
         sub_sequence.cmd("G1", x=0, y=0, e=0.2)
 
         # Adds the subsequence twice moving the z up between moves
@@ -126,14 +126,14 @@ class TestSequence(unittest.TestCase):
 
         expected_output = "G28                                ; Home axes\n" \
                           "G1 Z0.2\n" \
-                          "G1 X30 Y0 E0.2                     ; Begin square\n" \
+                          "G1 X0 Y30 E0.2                     ; Begin square\n" \
                           "G1 X30 Y30 E0.2\n" \
-                          "G1 X0 Y30 E0.2\n" \
+                          "G1 X30 Y0 E0.2\n" \
                           "G1 X0 Y0 E0.2\n" \
                           "G1 Z0.4\n" \
-                          "G1 X30.4 Y0 E0.2                   ; Begin square\n" \
+                          "G1 X0 Y30.4 E0.2                   ; Begin square\n" \
                           "G1 X30.4 Y30.4 E0.2\n" \
-                          "G1 X0 Y30.4 E0.2\n" \
+                          "G1 X30.4 Y0 E0.2\n" \
                           "G1 X0 Y0 E0.2"
 
         actual_output = "\n".join(main_sequence.generate())

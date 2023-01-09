@@ -1,4 +1,5 @@
 from geecode import create_command
+from string import Template
 
 
 class Sequence:
@@ -33,7 +34,6 @@ class Sequence:
                 gcode.extend(new_cmd)
             else:
                 gcode.append(new_cmd)
-
         return gcode
 
 
