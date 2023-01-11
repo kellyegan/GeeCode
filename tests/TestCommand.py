@@ -1,6 +1,6 @@
 import types
 import unittest
-from geecode import create_command
+from geecode.Sequence import create_command
 
 
 class TestCommand(unittest.TestCase):
