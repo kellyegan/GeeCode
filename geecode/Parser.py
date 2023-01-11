@@ -1,19 +1,18 @@
 
 
 class Parser:
-    def __init__(self, input_file=None):
+    def __init__(self, input_file=None, encoding="locale"):
         if isinstance(input_file, str):
-            print(input_file)
+            self.input_file = open(input_file, "r", encoding=encoding)
         elif input_file is not None:
-            print("Probably a file?")
+            self.input_file = input_file
         pass
 
     def __enter__(self):
-        pass
+        return self
 
-    def __exit__(self):
-        pass
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
-
-if __name__ == '__main__':
-    p = Parser(input_file="../tests/sample.gcode")
+    def close(self):
+        self.input_file.close()
