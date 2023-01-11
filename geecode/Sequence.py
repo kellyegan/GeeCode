@@ -37,11 +37,17 @@ class Sequence:
 
 
 def format_value(value):
+    """
+    Formats a numerical value for a g-code parameter
+    """
     number_string = f"{value:0.5f}" if not isinstance(value, str) else value
     return number_string.rstrip('0').rstrip('.')
 
 
 def template_gcode(code=None, **parameters):
+    """
+    Prepares a template string for a g-code command
+    """
     if code is None:
         return ""
 
@@ -55,6 +61,13 @@ def template_gcode(code=None, **parameters):
 
 
 def create_command(code=None, comment=None, **parameters):
+    """
+    Returns a function that generates a g-code command
+    :param code: g-code command to (G1, M200, etc.)
+    :param comment: comment to add to command
+    :param parameters: any parameters for the g-code command
+    :return: function
+    """
     def command(comments=True, indent=35, **variables):
         formatted_variables = {k: format_value(v) for k, v in variables.items()}
         template = Template(template_gcode(code=code, **parameters))

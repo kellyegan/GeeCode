@@ -5,27 +5,27 @@ from geecode.Sequence import create_command
 
 class TestCommand(unittest.TestCase):
     def test_no_params(self):
-        """Should print a command without any parameters or comments"""
+        """Should print a g-code command without any parameters or comments"""
         c = create_command("G28")
         self.assertEqual(c(), 'G28')
 
     def test_params(self):
-        """Should print a command with parameters"""
+        """Should print a g-code command with parameters"""
         c = create_command("G1", x=15, y=10)
         self.assertEqual("G1 X15 Y10", c())
 
     def test_comments_no_params(self):
-        """Should print a command without parameters and print indented comment"""
+        """Should print a g-code command without parameters and print indented comment"""
         c = create_command("G80", comment="mesh bed leveling")
         self.assertEqual("G80                                ; mesh bed leveling", c())
 
     def test_comments_params(self):
-        """Should print command and properly indented comment"""
+        """Should print g-code command and properly indented comment"""
         c = create_command("M201", p=9000, y=9000, z=500, e=10000, comment="sets max accelerations")
         self.assertEqual("M201 P9000 Y9000 Z500 E10000       ; sets max accelerations", c())
 
     def test_comment_only(self):
-        """Should print a comment without command or indent"""
+        """Should print a comment without g-code command or indent"""
         c = create_command(comment="sets max accelerations")
         self.assertEqual("; sets max accelerations", c())
 
